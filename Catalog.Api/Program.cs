@@ -1,4 +1,5 @@
 using Catalog.Api.Config;
+using Catalog.Api.Extensions;
 
 using Scalar.AspNetCore;
 
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference("api-docs");
+
+    await app.Services.InitializeDatabasesAsync();
 }
 
 app.MapControllers();
