@@ -20,6 +20,23 @@ services:
     ports:
       - "8000:80"
 
+  basketdb:
+    image: redis
+    container_name: basketdb
+    restart: always
+    ports:
+      - "6379:6379"
+
+  basket.api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: basket.api
+    depends_on:
+      - basketdb
+    ports:
+      - "8001:80"
+
 volumes:
   mongo_data:
     driver: local
