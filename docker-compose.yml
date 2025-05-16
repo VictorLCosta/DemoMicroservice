@@ -12,7 +12,7 @@ services:
   
   catalog.api:
     build:
-      context: .
+      context: ./Catalog.Api/
       dockerfile: Dockerfile
     container_name: catalog.api
     depends_on:
@@ -29,7 +29,7 @@ services:
 
   basket.api:
     build:
-      context: .
+      context: ./Basket.Api/
       dockerfile: Dockerfile
     container_name: basket.api
     depends_on:
@@ -37,6 +37,32 @@ services:
     ports:
       - "8001:80"
 
+  discountdb:
+    image: postgres
+    container_name: discountdb
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: discountdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  discount.api:
+    build:
+      context: ./Discount.Api/
+      dockerfile: Dockerfile
+    container_name: discount.api
+    depends_on:
+      - discountdb
+    ports:
+      - "8002:80"
+
 volumes:
   mongo_data:
     driver: local
+  pgdata:
+    driver: local
+  
